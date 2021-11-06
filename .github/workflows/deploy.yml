@@ -16,7 +16,6 @@ jobs:
                   key: ${{ secrets.SSHKEY }}
                   script: |
                     cd /var/www/html
-                    git remote set-url origin git@github.com:<ZMALIM>/<https://github.com/ZMALIM/portfolio.git>
                     git pull
 
 # name: Deploy to VPS
