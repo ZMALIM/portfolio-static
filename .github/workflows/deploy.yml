@@ -1,32 +1,53 @@
 name: Deploy to VPS
-
 on:
-  push:
-    branches: [main]
+    push:
+        branches: [master, dev]
 
 jobs:
-    build:
+    deploy:
         runs-on: ubuntu-latest
-
         steps:
-            - uses: actions/checkout@v1
-
-            - name: Copy repository contents via scp
-              uses: appleboy/scp-action@master
-              env:
-                  HOST: ${{ secrets.HOST }}
-                  USERNAME: ${{ secrets.USERNAME }}
-                  PORT: ${{ secrets.PORT }}
-                  KEY: ${{ secrets.SSHKEY }}
+            - name: Deploy App
+              uses: appleboy/ssh-action@v0.1.2
               with:
-                  source: "."
-                  target: "/var/www/html"
+                  host: ${{ secrets.HOST }}
+                  username: ${{ secrets.USERNAME }}
+                  port: ${{ secrets.PORT }}
+                  key: ${{ secrets.SSHKEY }}
+                  script: |
+                    cd /var/www/html
+                    git remote set-url origin git@github.com:<ZMALIM>/<https://github.com/ZMALIM/portfolio.git>
+                    git pull
 
-            # - name: Executing remote command
-            #   uses: appleboy/ssh-action@master
-            #   with:
-            #       host: ${{ secrets.HOST }}
-            #       USERNAME: ${{ secrets.USERNAME }}
-            #       PORT: ${{ secrets.PORT }}
-            #       KEY: ${{ secrets.SSHKEY }}
-            #       script: ls
+# name: Deploy to VPS
+
+# on:
+#   push:
+#     branches: [main]
+
+# jobs:
+#     build:
+#         runs-on: ubuntu-latest
+
+#         steps:
+#             - uses: actions/checkout@v1
+
+#             - name: Copy repository contents via scp
+#               uses: appleboy/scp-action@master
+#               env:
+#                   HOST: ${{ secrets.HOST }}
+#                   USERNAME: ${{ secrets.USERNAME }}
+#                   PORT: ${{ secrets.PORT }}
+#                   KEY: ${{ secrets.SSHKEY }}
+#               with:
+#                   source: "."
+#                   target: "/var/www/html"
+
+#             # - name: Executing remote command
+#             #   uses: appleboy/ssh-action@master
+#             #   with:
+#             #       host: ${{ secrets.HOST }}
+#             #       USERNAME: ${{ secrets.USERNAME }}
+#             #       PORT: ${{ secrets.PORT }}
+#             #       KEY: ${{ secrets.SSHKEY }}
+#             #       script: ls
