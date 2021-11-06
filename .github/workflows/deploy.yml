@@ -3,14 +3,17 @@ name: Deployment
 concurrency: production
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 jobs:
-  deployment:
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - name: deploy
-        run: git pull
+    deployment:
+        runs-on: ubuntu-latest
+        environment: production
+        steps:
+            - name: Search website location
+              run: 'cd /var/www/html'
+
+            - name: Deploy
+              run: git pull
